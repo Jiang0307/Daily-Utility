@@ -5,15 +5,25 @@ import os
 import shutil  
 from pathlib import Path
 
-current_path = Path(__file__)
-parent_dir = current_path.parent.absolute()
-files = os.listdir(parent_dir)
+black_list = [".git" , ".gitignore" , "README.md"]
 
-for file in files:
-    if (file.endswith(".git")) or (file.endswith(".gitignore")) or (file.endswith("README.md")):
-        continue
-    else:
-        print(file)
-        folder_name = Path(file).resolve().stem
-        os.mkdir(Path(parent_dir).joinpath(folder_name))
-        shutil.move(Path(parent_dir).joinpath(file).as_posix() , Path(parent_dir).joinpath(folder_name).as_posix() )
+def create_and_move_into_folder():
+    parent_dir = Path(__file__).parent.absolute()
+    files = os.listdir(parent_dir)
+    for file in files:
+        file_name = Path(parent_dir).joinpath(file).as_posix()
+        if file_name != Path(__file__).as_posix():
+            print(file_name)
+            stop = False
+            for extension in black_list:
+                if (file.endswith(extension)):
+                    stop = True
+            if stop == False:
+                folder_name = Path(file).resolve().stem
+                folder_path = Path(parent_dir).joinpath(folder_name).as_posix()
+                if not os.path.exists(folder_path):
+                    os.mkdir(folder_path)
+                shutil.move(file_name , folder_path )
+
+if __name__ == '__main__':
+    create_and_move_into_folder()
