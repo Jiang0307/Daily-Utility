@@ -10,7 +10,7 @@ parent_dir = current_path.parent.absolute()
 files = os.listdir(parent_dir)
 
 for file in files:
-    if (file.endswith(".git")) or (file.endswith("README.md")):
+    if (file.endswith(".git")) or (file.endswith(".gitignore")) or (file.endswith("README.md")):
         continue
     else:
         print(file)
